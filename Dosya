@@ -1,0 +1,1267 @@
+
+ // Hastane oda kapıları
+ function hospitalDoor(x,z,side){
+  const doorGroup=new THREE.Group();
+
+  box(doorGroup,0,1.35,0,0.12,2.7,1.55,
+      mat(0x403b35));
+
+  box(doorGroup,0.09,1.35,-0.62,0.08,2.7,0.12,
+      mat(0x77716a));
+
+  box(doorGroup,0.09,1.35,0.62,0.08,2.7,0.12,
+      mat(0x77716a));
+
+  const handle=new THREE.Mesh(
+   new THREE.SphereGeometry(0.08,12,12),
+   mat(0xc6a65c,0.3,0.7)
+  );
+  handle.position.set(-0.1,1.2,-0.45);
+  doorGroup.add(handle);
+
+  doorGroup.position.set(x,0,z);
+  doorGroup.rotation.y=side;
+  scene.add(doorGroup);
+ }const speed=sprint?11:6;
+
+ for(const z of [-25,-13,-1,11,23]){
+  hospitalDoor(-3.1,z,0);
+  hospitalDoor(3.1,z,Math.PI);
+ }
+// HASTANE ODA KAPILARI
+function hospitalDoor(x,z,side){
+  const doorGroup=new THREE.Group();
+
+  box(doorGroup,0,1.35,0,0.12,2.7,1.55,
+      mat(0x403b35));
+
+  box(doorGroup,0.09,1.35,-0.62,0.08,2.7,0.12,
+      mat(0x77716a));
+
+  box(doorGroup,0.09,1.35,0.62,0.08,2.7,0.12,
+      mat(0x77716a));
+
+  const handle=new THREE.Mesh(
+    new THREE.SphereGeometry(0.08,12,12),
+    mat(0xc6a65c,0.3,0.7)
+  );
+
+  handle.position.set(-0.1,1.2,-0.45);
+  doorGroup.add(handle);
+
+  doorGroup.position.set(x,0,z);
+  doorGroup.rotation.y=side;
+  scene.add(doorGroup);
+}
+
+for(const z of [-25,-13,-1,11,23]){
+  hospitalDoor(-3.1,z,0);
+  hospitalDoor(3.1,z,Math.PI);
+}const speed=sprint?5.5:3.0;
+function finish(won){
+ gameEnded=true;
+ running=false;
+
+ if(!won){
+  const scare=document.getElementById('jumpscare');
+  scare.style.display='flex';
+  document.body.classList.add('shaking');
+
+  setTimeout(()=>{
+   scare.style.display='none';
+   document.body.classList.remove('shaking');
+   showResult(false);
+  },1400);
+ }else{
+  showResult(true);
+ }
+}
+
+function showResult(won){
+ document.getElementById('overlay').style.display='flex';
+ document.getElementById('resultTitle').textContent=
+  won?'BÖLÜM TAMAMLANDI':'YAKALANDIN';
+ document.getElementById('resultText').textContent=
+  won?'Hastaneden kaçmayı başardın!':
+  'Canavar seni yakaladı. Tekrar deneyebilirsin.';
+}
+
+#jumpscare{
+ display:none;
+ position:fixed;
+ inset:0;
+ z-index:20;
+ background:radial-gradient(circle,#4a0000,#050000 75%);
+ align-items:center;
+ justify-content:center;
+}
+#scareFace{
+ width:75vw;
+ max-width:430px;
+ height:75vw;
+ max-height:430px;
+ border-radius:48%;
+ background:radial-gradient(ellipse,#555 0%,#181818 65%,#000 100%);
+ box-shadow:0 0 70px #b00000;
+ position:relative;
+ animation:scareZoom .35s ease-out;
+}
+#scareFace:before{
+ content:"";
+ position:absolute;
+ width:70%;
+ height:18%;
+ left:15%;
+ top:32%;
+ background:radial-gradient(ellipse,#ff0000 0%,#700000 35%,transparent 70%);
+ border-radius:50%;
+}
+#scareFace:after{
+ content:"";
+ position:absolute;
+ width:32%;
+ height:30%;
+ left:34%;
+ bottom:12%;
+ background:#030303;
+ border-radius:50%;
+ box-shadow:0 0 18px #900;
+}
+@keyframes scareZoom{
+ from{transform:scale(.15)}
+ to{transform:scale(1.15)}
+}
+@keyframes shakeScreen{
+ 0%,100%{transform:translate(0,0)}
+ 20%{transform:translate(-12px,8px)}
+ 40%{transform:translate(12px,-8px)}
+ 60%{transform:translate(-8px,-8px)}
+ 80%{transform:translate(8px,8px)}
+}
+body.shaking{animation:shakeScreen .12s infinite}
+
+ // Daha detaylı insansı canavar
+ monster=new THREE.Group();
+
+ const monsterSkin=mat(0x252326);
+ const dark=mat(0x09090b);
+ const eyeMat=new THREE.MeshBasicMaterial({color:0xff1010});
+
+ // Gövde
+ box(monster,0,1.35,0,0.85,1.55,0.48,monsterSkin);
+
+ // Büyük kafa
+ const head=new THREE.Mesh(
+  new THREE.SphereGeometry(0.48,20,20),
+  monsterSkin
+ );
+ head.position.set(0,2.45,0);
+ monster.add(head);
+
+ // Çene ve ağız
+ box(monster,0,2.13,-0.35,0.48,0.2,0.12,dark);
+
+ // Parlayan gözler
+ const eye1=new THREE.Mesh(
+  new THREE.SphereGeometry(0.075,12,12),eyeMat
+ );
+ const eye2=eye1.clone();
+ eye1.position.set(-0.17,2.48,-0.42);
+ eye2.position.set(0.17,2.48,-0.42);
+ monster.add(eye1,eye2);
+
+ // Uzun kollar
+ const arm1=box(monster,-0.58,1.15,0,0.23,1.45,0.25,monsterSkin);
+ const arm2=box(monster,0.58,1.15,0,0.23,1.45,0.25,monsterSkin);
+
+ // Bacaklar
+ box(monster,-0.23,0.35,0,0.3,0.8,0.32,dark);
+ box(monster,0.23,0.35,0,0.3,0.8,0.32,dark);
+
+ monster.position.set(8,0,-25);
+ scene.add(monster);
+
+ monster.userData.arm1=arm1;
+ monster.userData.arm2=arm2;
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>HORROR PROTOCOL</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;background:#050505;color:white;font-family:Arial;touch-action:none}
+canvas{display:block}
+#menu{position:fixed;inset:0;z-index:5;background:radial-gradient(#292929,#050505);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+h1{color:#d00000;font-size:35px}
+button{background:#850000;color:white;border:1px solid red;padding:13px 20px;margin:5px;border-radius:8px;font-size:18px;touch-action:none}
+#hud{display:none;position:fixed;inset:0;z-index:2;pointer-events:none}
+#info{position:absolute;top:12px;left:12px;background:#000b;padding:10px;line-height:1.5}
+#controls{position:absolute;bottom:18px;left:12px;pointer-events:auto}
+#controls button{width:55px;height:55px;padding:0}
+#rightControls{position:absolute;right:15px;bottom:25px;pointer-events:auto}
+#rightControls button{width:60px;height:60px}
+#lookArea{position:absolute;right:0;top:0;width:55%;height:75%;pointer-events:auto;touch-action:none}
+#lookText{position:absolute;right:15px;top:50%;font-size:12px;color:#aaa;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div id="menu">
+<h1>HORROR PROTOCOL</h1>
+<p>Hastaneden kaçabilecek misin?</p>
+<button onclick="startGame()">OYNA</button>
+<p>Made by Emirhan Şahin</p>
+</div>
+
+<div id="hud">
+<div id="info">GÖREV: Anahtarı bul<br>Anahtar: Yok</div>
+<div id="lookArea"></div>
+<div id="lookText">Kamerayı döndür</div>
+<div id="controls">
+<button id="up">▲</button><br>
+<button id="left">◀</button>
+<button id="down">▼</button>
+<button id="right">▶</button>
+</div>
+<div id="rightControls">
+<button onclick="toggleLight()">🔦</button>
+</div>
+</div>
+
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+let scene,camera,renderer,player,flashlight,monster,keyObject,door;
+let running=false,flashlightOn=true,hasKey=false,gameOver=false;
+let keys={},yaw=0,pitch=0;
+let lookPointer=null,lastX=0,lastY=0;
+
+window.startGame=function(){
+ document.getElementById('menu').style.display='none';
+ document.getElementById('hud').style.display='block';
+ if(!scene)init();
+ running=true;
+};
+
+window.toggleLight=function(){
+ flashlightOn=!flashlightOn;
+ flashlight.visible=flashlightOn;
+};
+
+function init(){
+ scene=new THREE.Scene();
+ scene.background=new THREE.Color(0x080808);
+ scene.fog=new THREE.Fog(0x080808,5,35);
+
+ camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,0.1,100);
+ renderer=new THREE.WebGLRenderer({antialias:true});
+ renderer.setSize(innerWidth,innerHeight);
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ document.body.appendChild(renderer.domElement);
+
+ scene.add(new THREE.AmbientLight(0xffffff,0.3));
+
+ const floor=new THREE.Mesh(
+  new THREE.PlaneGeometry(40,40),
+  new THREE.MeshStandardMaterial({color:0x303030})
+ );
+ floor.rotation.x=-Math.PI/2;
+ scene.add(floor);
+
+ const wallMaterial=new THREE.MeshStandardMaterial({color:0x555555});
+
+ function makeWall(x,y,z,w,h,d){
+  const obj=new THREE.Mesh(
+   new THREE.BoxGeometry(w,h,d),wallMaterial
+  );
+  obj.position.set(x,y,z);
+  scene.add(obj);
+ }
+
+ makeWall(0,2,-15,30,4,1);
+ makeWall(0,2,15,30,4,1);
+ makeWall(-15,2,0,1,4,30);
+ makeWall(15,2,0,1,4,30);
+
+ for(let i=0;i<5;i++){
+  makeWall(-8+i*4,1.5,-5,0.5,3,7);
+ }
+
+ // Oyuncu
+ player=new THREE.Group();
+ const body=new THREE.Mesh(
+  new THREE.BoxGeometry(0.7,1.5,0.5),
+  new THREE.MeshStandardMaterial({color:0x26364a})
+ );
+ body.position.y=0.75;
+ player.add(body);
+ player.position.set(0,0,8);
+ scene.add(player);
+
+ // El feneri
+ flashlight=new THREE.SpotLight(0xffffff,4,20,Math.PI/5,0.4);
+ flashlight.position.set(0,1.3,0);
+ flashlight.target.position.set(0,1,-5);
+ player.add(flashlight);
+ player.add(flashlight.target);
+
+ // Anahtar
+ keyObject=new THREE.Mesh(
+  new THREE.BoxGeometry(0.5,0.5,0.5),
+  new THREE.MeshStandardMaterial({
+   color:0xffdd00,emissive:0x665500
+  })
+ );
+ keyObject.position.set(5,0.5,-3);
+ scene.add(keyObject);
+
+ // Kaçış kapısı
+ door=new THREE.Mesh(
+  new THREE.BoxGeometry(2,3,0.4),
+  new THREE.MeshStandardMaterial({color:0x225533})
+ );
+ door.position.set(0,1.5,-13.5);
+ scene.add(door);
+
+ // Canavar
+ monster=new THREE.Mesh(
+  new THREE.BoxGeometry(1,2,1),
+  new THREE.MeshStandardMaterial({
+   color:0x990000,emissive:0x220000
+  })
+ );
+ monster.position.set(-9,1,-8);
+ scene.add(monster);
+
+ const lamp=new THREE.PointLight(0xffcccc,2,12);
+ lamp.position.set(0,3,-10);
+ scene.add(lamp);
+
+ setupControls();
+ animate();
+}
+
+function setupControls(){
+ function bind(id,key){
+  const el=document.getElementById(id);
+  el.addEventListener('pointerdown',e=>{
+   e.preventDefault();
+   el.setPointerCapture(e.pointerId);
+   keys[key]=true;
+  });
+  function stop(){keys[key]=false;}
+  ['pointerup','pointercancel','lostpointercapture'].forEach(evt=>{
+   el.addEventListener(evt,stop);
+  });
+ }
+ bind('up','w');
+ bind('down','s');
+ bind('left','a');
+ bind('right','d');
+
+ window.addEventListener('keydown',e=>{
+  keys[e.key.toLowerCase()]=true;
+ });
+ window.addEventListener('keyup',e=>{
+  keys[e.key.toLowerCase()]=false;
+ });
+
+ const area=document.getElementById('lookArea');
+
+ area.addEventListener('pointerdown',e=>{
+  lookPointer=e.pointerId;
+  lastX=e.clientX;
+  lastY=e.clientY;
+  area.setPointerCapture(e.pointerId);
+ });
+
+ area.addEventListener('pointermove',e=>{
+  if(e.pointerId!==lookPointer)return;
+  const dx=e.clientX-lastX;
+  const dy=e.clientY-lastY;
+  lastX=e.clientX;
+  lastY=e.clientY;
+  yaw-=dx*0.006;
+  pitch-=dy*0.004;
+  pitch=THREE.MathUtils.clamp(pitch,-0.8,0.8);
+ });
+
+ function endLook(e){
+  if(e.pointerId===lookPointer)lookPointer=null;
+ }
+ area.addEventListener('pointerup',endLook);
+ area.addEventListener('pointercancel',endLook);
+}
+
+function animate(){
+ requestAnimationFrame(animate);
+ if(!running||gameOver)return;
+
+ const speed=0.075;
+ let forward=0,side=0;
+
+ if(keys.w||keys.arrowup)forward++;
+ if(keys.s||keys.arrowdown)forward--;
+ if(keys.a||keys.arrowleft)side--;
+ if(keys.d||keys.arrowright)side++;
+
+ if(forward||side){
+  const length=Math.hypot(forward,side);
+  forward/=length;
+  side/=length;
+
+  // Hareket artık kameranın baktığı yöne göre hesaplanıyor.
+  const dx=-Math.sin(yaw)*forward+Math.cos(yaw)*side;
+  const dz=-Math.cos(yaw)*forward-Math.sin(yaw)*side;
+
+  player.position.x+=dx*speed;
+  player.position.z+=dz*speed;
+
+  player.rotation.y=Math.atan2(-dx,-dz);
+ }
+
+ player.position.x=THREE.MathUtils.clamp(player.position.x,-13,13);
+ player.position.z=THREE.MathUtils.clamp(player.position.z,-13,13);
+
+ // Kamera oyuncuyu takip eder
+ const distance=5;
+ const horizontal=Math.cos(pitch)*distance;
+ camera.position.set(
+  player.position.x+Math.sin(yaw)*horizontal,
+  player.position.y+1.8+Math.sin(pitch)*distance,
+  player.position.z+Math.cos(yaw)*horizontal
+ );
+ camera.lookAt(
+  player.position.x,
+  player.position.y+1.2,
+  player.position.z
+ );
+
+ // Anahtar toplama
+ keyObject.rotation.y+=0.03;
+ if(!hasKey && player.position.distanceTo(keyObject.position)<1.3){
+  hasKey=true;
+  scene.remove(keyObject);
+  document.getElementById('info').innerHTML=
+   'GÖREV: Kaçış kapısına git<br>Anahtar: Bulundu!';
+ }
+
+ // Canavar oyuncuya yaklaşır
+ const direction=new THREE.Vector3(
+  player.position.x-monster.position.x,
+  0,
+  player.position.z-monster.position.z
+ );
+ const distanceToPlayer=direction.length();
+
+ if(distanceToPlayer>1.2){
+  direction.normalize();
+  monster.position.x+=direction.x*0.025;
+  monster.position.z+=direction.z*0.025;
+  monster.rotation.y=Math.atan2(-direction.x,-direction.z);
+ }else{
+  gameOver=true;
+  document.getElementById('info').innerHTML=
+   'CANAVAR SENİ YAKALADI! Sayfayı yenileyip tekrar dene.';
+ }
+
+ // Kaçış kapısı
+ const doorDistance=player.position.distanceTo(door.position);
+ if(hasKey&&doorDistance<2){
+  gameOver=true;
+  document.getElementById('info').innerHTML=
+   'BÖLÜM TAMAMLANDI! Hastaneden kaçtın!';
+ }
+
+ renderer.render(scene,camera);
+}
+
+window.addEventListener('resize',()=>{
+ if(!camera||!renderer)return;
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>HORROR PROTOCOL</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;background:#050505;color:white;font-family:Arial;touch-action:none}
+canvas{display:block}
+#menu{position:fixed;inset:0;z-index:5;background:radial-gradient(#292929,#050505);display:flex;flex-direction:column;align-items:center;justify-content:center}
+h1{color:#d00000;font-size:36px}
+button{background:#850000;color:white;border:1px solid red;padding:13px 20px;margin:5px;border-radius:8px;font-size:18px;touch-action:none}
+#hud{display:none;position:fixed;inset:0;z-index:2;pointer-events:none}
+#info{position:absolute;top:12px;left:12px;background:#0009;padding:10px}
+#controls{position:absolute;bottom:18px;left:12px;pointer-events:auto}
+#controls button{width:55px;height:55px;padding:0}
+#rightControls{position:absolute;right:15px;bottom:25px;pointer-events:auto}
+#rightControls button{width:60px;height:60px}
+#lookArea{position:absolute;right:0;top:0;width:55%;height:75%;pointer-events:auto;touch-action:none}
+#lookText{position:absolute;right:15px;top:50%;color:#aaa;font-size:12px;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div id="menu">
+<h1>HORROR PROTOCOL</h1>
+<p>Hastaneden kaçabilecek misin?</p>
+<button onclick="startGame()">OYNA</button>
+<p>Made by Emirhan Şahin</p>
+</div>
+
+<div id="hud">
+<div id="info">HORROR PROTOCOL<br>Görev: Hastaneyi keşfet</div>
+<div id="lookArea"></div>
+<div id="lookText">Kamerayı döndürmek için sürükle</div>
+<div id="controls">
+<button id="up">▲</button><br>
+<button id="left">◀</button>
+<button id="down">▼</button>
+<button id="right">▶</button>
+</div>
+<div id="rightControls">
+<button onclick="toggleLight()">🔦</button>
+</div>
+</div>
+
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+let scene,camera,renderer,player,flashlight;
+let running=false,flashlightOn=true;
+let keys={};
+let yaw=0,pitch=0;
+let lookPointer=null,lastX=0,lastY=0;
+
+window.startGame=function(){
+ document.getElementById('menu').style.display='none';
+ document.getElementById('hud').style.display='block';
+ if(!scene)init();
+ running=true;
+};
+
+window.toggleLight=function(){
+ flashlightOn=!flashlightOn;
+ if(flashlight)flashlight.visible=flashlightOn;
+};
+
+function init(){
+ scene=new THREE.Scene();
+ scene.background=new THREE.Color(0x080808);
+ scene.fog=new THREE.Fog(0x080808,5,35);
+
+ camera=new THREE.PerspectiveCamera(
+  70,innerWidth/innerHeight,0.1,100
+ );
+
+ renderer=new THREE.WebGLRenderer({antialias:true});
+ renderer.setSize(innerWidth,innerHeight);
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ document.body.appendChild(renderer.domElement);
+
+ scene.add(new THREE.AmbientLight(0xffffff,0.3));
+
+ const floor=new THREE.Mesh(
+  new THREE.PlaneGeometry(40,40),
+  new THREE.MeshStandardMaterial({color:0x303030})
+ );
+ floor.rotation.x=-Math.PI/2;
+ scene.add(floor);
+
+ const wallMaterial=new THREE.MeshStandardMaterial({color:0x555555});
+
+ function makeWall(x,y,z,w,h,d){
+  const obj=new THREE.Mesh(
+   new THREE.BoxGeometry(w,h,d),wallMaterial
+  );
+  obj.position.set(x,y,z);
+  scene.add(obj);
+ }
+
+ makeWall(0,2,-15,30,4,1);
+ makeWall(0,2,15,30,4,1);
+ makeWall(-15,2,0,1,4,30);
+ makeWall(15,2,0,1,4,30);
+
+ for(let i=0;i<5;i++){
+  makeWall(-8+i*4,1.5,-5,0.5,3,7);
+ }
+
+ player=new THREE.Group();
+
+ const body=new THREE.Mesh(
+  new THREE.BoxGeometry(0.7,1.5,0.5),
+  new THREE.MeshStandardMaterial({color:0x26364a})
+ );
+ body.position.y=0.75;
+ player.add(body);
+ player.position.set(0,0,8);
+ scene.add(player);
+
+ flashlight=new THREE.SpotLight(
+  0xffffff,4,20,Math.PI/5,0.4
+ );
+ flashlight.position.set(0,1.3,0);
+ flashlight.target.position.set(0,1,-5);
+ player.add(flashlight);
+ player.add(flashlight.target);
+
+ const lamp=new THREE.PointLight(0xffcccc,2,12);
+ lamp.position.set(0,3,-10);
+ scene.add(lamp);
+
+ setupControls();
+ animate();
+}
+
+function setupControls(){
+ function bind(id,key){
+  const el=document.getElementById(id);
+  el.addEventListener('pointerdown',e=>{
+   e.preventDefault();
+   el.setPointerCapture(e.pointerId);
+   keys[key]=true;
+  });
+  function stop(){keys[key]=false}
+  el.addEventListener('pointerup',stop);
+  el.addEventListener('pointercancel',stop);
+  el.addEventListener('lostpointercapture',stop);
+ }
+ bind('up','w');
+ bind('down','s');
+ bind('left','a');
+ bind('right','d');
+
+ window.addEventListener('keydown',e=>{
+  keys[e.key.toLowerCase()]=true;
+ });
+ window.addEventListener('keyup',e=>{
+  keys[e.key.toLowerCase()]=false;
+ });
+
+ const area=document.getElementById('lookArea');
+
+ area.addEventListener('pointerdown',e=>{
+  lookPointer=e.pointerId;
+  lastX=e.clientX;
+  lastY=e.clientY;
+  area.setPointerCapture(e.pointerId);
+ });
+
+ area.addEventListener('pointermove',e=>{
+  if(e.pointerId!==lookPointer)return;
+  const dx=e.clientX-lastX;
+  const dy=e.clientY-lastY;
+  lastX=e.clientX;
+  lastY=e.clientY;
+  yaw-=dx*0.006;
+  pitch-=dy*0.004;
+  pitch=THREE.MathUtils.clamp(pitch,-0.8,0.8);
+ });
+
+ function endLook(e){
+  if(e.pointerId===lookPointer)lookPointer=null;
+ }
+ area.addEventListener('pointerup',endLook);
+ area.addEventListener('pointercancel',endLook);
+}
+
+function animate(){
+ requestAnimationFrame(animate);
+ if(!running)return;
+
+ const speed=0.075;
+ let forward=0,side=0;
+
+ if(keys.w||keys.arrowup)forward+=1;
+ if(keys.s||keys.arrowdown)forward-=1;
+ if(keys.a||keys.arrowleft)side-=1;
+ if(keys.d||keys.arrowright)side+=1;
+
+ if(forward||side){
+  const length=Math.hypot(forward,side);
+  forward/=length;
+  side/=length;
+
+  const dx=Math.sin(yaw)*forward+Math.cos(yaw)*side;
+  const dz=-Math.cos(yaw)*forward+Math.sin(yaw)*side;
+
+  player.position.x+=dx*speed;
+  player.position.z+=dz*speed;
+
+  player.rotation.y=Math.atan2(dx,dz);
+ }
+
+ player.position.x=THREE.MathUtils.clamp(player.position.x,-13,13);
+ player.position.z=THREE.MathUtils.clamp(player.position.z,-13,13);
+
+ const distance=5;
+ const horizontal=Math.cos(pitch)*distance;
+
+ camera.position.set(
+  player.position.x+Math.sin(yaw)*horizontal,
+  player.position.y+1.8+Math.sin(pitch)*distance,
+  player.position.z+Math.cos(yaw)*horizontal
+ );
+
+ camera.lookAt(
+  player.position.x,
+  player.position.y+1.2,
+  player.position.z
+ );
+
+ renderer.render(scene,camera);
+}
+
+window.addEventListener('resize',()=>{
+ if(!camera||!renderer)return;
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HORROR PROTOCOL</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#050608;color:white;font-family:Arial;overflow:hidden}
+button,input{font:inherit}
+button{background:#8d1010;color:white;border:1px solid #c33;padding:13px 20px;border-radius:7px;font-weight:bold;cursor:pointer;margin:5px}
+button:active{transform:scale(.96)}
+input{padding:14px;background:#151719;color:white;border:1px solid #555;border-radius:6px;width:85%;max-width:300px;margin:8px}
+.panel{position:fixed;inset:0;z-index:10;background:radial-gradient(#202326,#030405 75%);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+.card{width:min(430px,95vw);padding:25px 15px;background:#090c0fee;border:1px solid #5b2424;border-radius:12px;box-shadow:0 0 35px #500}
+h1{font-size:36px;letter-spacing:4px;color:#e21b1b;text-shadow:0 0 18px red}
+h2{color:#e33}
+.small{color:#aaa;font-size:12px}
+#game{position:fixed;inset:0;display:none}
+#hud{position:absolute;top:12px;left:12px;z-index:3;text-shadow:0 2px 5px black;font-size:14px}
+#message{position:absolute;top:20%;width:100%;text-align:center;color:#ff5555;font-weight:bold;text-shadow:0 0 10px red;pointer-events:none}
+#cross{position:absolute;left:50%;top:50%;width:5px;height:5px;background:white;border-radius:50%;opacity:.7}
+#controls{position:absolute;bottom:18px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:end;z-index:4;pointer-events:none}
+.pad{display:grid;grid-template-columns:55px 55px 55px;grid-template-rows:55px 55px;gap:4px;pointer-events:auto}
+.pad button,.actions button{background:#17191cbb;border:1px solid #aaa;color:white;padding:8px;margin:0;touch-action:none}
+.pad button:nth-child(1){grid-column:2}
+.pad button:nth-child(2){grid-column:1;grid-row:2}
+.pad button:nth-child(3){grid-column:2;grid-row:2}
+.pad button:nth-child(4){grid-column:3;grid-row:2}
+.actions{display:flex;flex-direction:column;gap:8px;pointer-events:auto}
+#look{position:absolute;right:0;top:0;width:65%;height:75%;z-index:2;touch-action:none}
+#scare{display:none;position:fixed;inset:0;z-index:30;background:#090000;align-items:center;justify-content:center;animation:shake .1s infinite}
+.face{width:85vw;height:85vw;max-width:420px;max-height:420px;border-radius:48%;background:radial-gradient(#777,#222 55%,#000);box-shadow:0 0 100px red;position:relative}
+.face:before{content:"";position:absolute;top:32%;left:15%;width:70%;height:15%;background:red;border-radius:50%;box-shadow:0 0 35px red}
+.face:after{content:"";position:absolute;bottom:10%;left:35%;width:30%;height:35%;background:#050000;border-radius:50%}
+@keyframes shake{0%{transform:translate(0)}25%{transform:translate(9px,-8px)}50%{transform:translate(-9px,8px)}75%{transform:translate(8px,8px)}}
+#result{display:none}
+</style>
+</head>
+<body>
+
+<div id="menu" class="panel">
+ <div class="card">
+  <h1>HORROR<br>PROTOCOL</h1>
+  <p>HASTANEDE KİMSE YALNIZ DEĞİL</p>
+  <input id="username" placeholder="Kullanıcı adını yaz">
+  <br><button onclick="login()">DEVAM ET</button>
+  <p class="small">MADE BY EMİRHAN ŞAHİN</p>
+ </div>
+</div>
+
+<div id="mainMenu" class="panel" style="display:none">
+ <div class="card">
+  <h1>HORROR PROTOCOL</h1>
+  <p id="welcome"></p>
+  <button onclick="startGame()">TEK KİŞİLİK OYNA</button><br>
+  <button onclick="createRoom()">ODA KUR</button><br>
+  <button onclick="joinScreen()">ODAYA KATIL</button><br>
+  <button onclick="showInfo()">OYUN HAKKINDA</button>
+ </div>
+</div>
+
+<div id="roomMenu" class="panel" style="display:none">
+ <div class="card">
+  <h2 id="roomTitle">ODA</h2>
+  <input id="roomName" placeholder="Oda adını yaz">
+  <br><button onclick="makeRoom()">ODA OLUŞTUR</button>
+  <button onclick="joinRoom()">KATIL</button>
+  <br><button onclick="backMenu()">GERİ</button>
+  <p class="small">Çok oyunculu bağlantı bu prototipte henüz aktif değil.</p>
+ </div>
+</div>
+
+<div id="lobby" class="panel" style="display:none">
+ <div class="card">
+  <h2>ODA LOBİSİ</h2>
+  <p id="roomDisplay"></p>
+  <p id="hostDisplay"></p>
+  <button onclick="startGame()">OYUNU BAŞLAT</button>
+  <button onclick="backMenu()">GERİ</button>
+  <p class="small">Bu deneme sürümünde oda lobisi yerel gösterimdir.</p>
+ </div>
+</div>
+
+<div id="game">
+ <div id="hud">
+  <b>HORROR PROTOCOL</b><br>
+  Oyuncu: <span id="playerName"></span><br>
+  Görev: Anahtarı bul ve çıkışa ulaş<br>
+  <span id="status">Anahtar aranıyor...</span>
+ </div>
+ <div id="message"></div>
+ <div id="cross"></div>
+ <div id="look"></div>
+ <div id="controls">
+  <div class="pad">
+   <button data-move="forward">▲</button>
+   <button data-move="left">◀</button>
+   <button data-move="back">▼</button>
+   <button data-move="right">▶</button>
+  </div>
+  <div class="actions">
+   <button id="runBtn">KOŞ</button>
+   <button onclick="interact()">ETKİLEŞİM</button>
+   <button onclick="switchLight()">FENER</button>
+  </div>
+ </div>
+</div>
+
+<div id="scare"><div class="face"></div></div>
+
+<div id="result" class="panel">
+ <div class="card">
+  <h1 id="resultTitle">BÖLÜM BİTTİ</h1>
+  <p id="resultText"></p>
+  <button onclick="startGame()">TEKRAR OYNA</button>
+  <button onclick="backMenu()">ANA MENÜ</button>
+ </div>
+</div>
+
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+let scene,camera,renderer,player,monster,flashlight;
+let yaw=0,pitch=0;
+let running=false,hasKey=false,lightOn=true;
+let gameEnded=false,roomOwner=false;
+let lastTime=0,scareTimer=0,flickerTimer=0;
+let audioCtx,ambientOsc;
+let doors=[],lamps=[];
+let username="Oyuncu";
+let keys={};
+let touchMove={forward:false,back:false,left:false,right:false};
+let lastMonsterSound=0;
+
+const $=id=>document.getElementById(id);
+
+function hideMenus(){
+ ["menu","mainMenu","roomMenu","lobby","result"].forEach(id=>$(id).style.display="none");
+}
+function login(){
+ username=$("username").value.trim();
+ if(!username){alert("Önce kullanıcı adını yaz!");return}
+ $("welcome").textContent="Hoş geldin, "+username;
+ hideMenus();$("mainMenu").style.display="flex";
+}
+function backMenu(){
+ running=false;
+ $("game").style.display="none";
+ $("scare").style.display="none";
+ $("result").style.display="none";
+ $("mainMenu").style.display="flex";
+}
+function createRoom(){
+ hideMenus();$("roomMenu").style.display="flex";
+ $("roomTitle").textContent="ODA KUR";
+ $("roomName").placeholder="Oda adını yaz";
+ roomOwner=true;
+}
+function joinScreen(){
+ hideMenus();$("roomMenu").style.display="flex";
+ $("roomTitle").textContent="ODAYA KATIL";
+ $("roomName").placeholder="Katılacağın odanın adını yaz";
+ roomOwner=false;
+}
+function makeRoom(){
+ let name=$("roomName").value.trim();
+ if(!name){alert("Oda ismi yaz!");return}
+ $("roomDisplay").textContent="Oda: "+name;
+ $("hostDisplay").textContent="Oda sahibi: "+username;
+ hideMenus();$("lobby").style.display="flex";
+}
+function joinRoom(){
+ let name=$("roomName").value.trim();
+ if(!name){alert("Oda ismini yaz!");return}
+ alert("Bu prototipte gerçek çevrim içi odalar henüz bağlı değil. Şimdilik tek kişilik oynayabilirsin.");
+}
+function showInfo(){
+ alert("HORROR PROTOCOL\nHastanede anahtarı bul, canavandan kaç ve çıkışa ulaş.");
+}
+
+function soundInit(){
+ if(audioCtx)return;
+ audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+}
+function tone(freq,duration,type="sine",volume=.04){
+ if(!audioCtx)return;
+ const o=audioCtx.createOscillator();
+ const g=audioCtx.createGain();
+ o.type=type;o.frequency.value=freq;
+ g.gain.setValueAtTime(volume,audioCtx.currentTime);
+ g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+ o.connect(g);g.connect(audioCtx.destination);
+ o.start();o.stop(audioCtx.currentTime+duration);
+}
+function doorSound(){
+ tone(90,.35,"sawtooth",.07);
+ setTimeout(()=>tone(55,.4,"triangle",.05),120);
+}
+function monsterSound(){
+ tone(48,.7,"sawtooth",.045);
+ setTimeout(()=>tone(65,.5,"sawtooth",.035),180);
+}
+function flickerSound(){
+ tone(110,.12,"square",.025);
+}
+
+function material(color,roughness=1){
+ return new THREE.MeshStandardMaterial({color,roughness});
+}
+function addBox(parent,x,y,z,w,h,d,mat){
+ const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+ mesh.position.set(x,y,z);
+ mesh.castShadow=true;mesh.receiveShadow=true;
+ parent.add(mesh);return mesh;
+}
+
+function buildHospital(){
+ scene=new THREE.Scene();
+ scene.background=new THREE.Color(0x05070b);
+ scene.fog=new THREE.FogExp2(0x080b10,.035);
+
+ camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,150);
+ renderer=new THREE.WebGLRenderer({antialias:true});
+ renderer.setSize(innerWidth,innerHeight);
+ renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));
+ renderer.shadowMap.enabled=true;
+ renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;
+ renderer.toneMappingExposure=1.15;
+ $("game").appendChild(renderer.domElement);
+
+ scene.add(new THREE.HemisphereLight(0x8999bb,0x17131a,.35));
+
+ const floorMat=material(0x383b3d);
+ const wallMat=material(0x777879);
+ const ceilingMat=material(0x292d32);
+ const trimMat=material(0x24282d);
+
+ addBox(scene,0,-.18,-12,13,.35,75,floorMat);
+ addBox(scene,0,4.1,-12,13,.25,75,ceilingMat);
+
+ // Ana koridor duvarları ve oda bölümleri
+ addBox(scene,-6.5,2,-12,.35,4,75,wallMat);
+ addBox(scene,6.5,2,-12,.35,4,75,wallMat);
+
+ for(let z=-3;z>-65;z-=10){
+  addBox(scene,-9,2,z,5,4,.25,wallMat);
+  addBox(scene,9,2,z,5,4,.25,wallMat);
+  addBox(scene,-9,.02,z,5,.12,9,floorMat);
+  addBox(scene,9,.02,z,5,.12,9,floorMat);
+  addBox(scene,-9,4,z,5,.2,9,ceilingMat);
+  addBox(scene,9,4,z,5,.2,9,ceilingMat);
+
+  // Oda kapıları
+  createDoor(-6.25,z);
+  createDoor(6.25,z);
+  addBox(scene,-9,2,z-4.5,5,4,.25,wallMat);
+  addBox(scene,9,2,z-4.5,5,4,.25,wallMat);
+ }
+ // Koridor son duvarı
+ addBox(scene,0,2,-50,13,4,.3,wallMat);
+
+ // Hastane yatakları ve dolaplar
+ for(let z=-5;z>-55;z-=10){
+  addBox(scene,-8.8,.65,z,2.1,.5,3.3,material(0xb8b9b9));
+  addBox(scene,-8.8,1.05,z-1.25,2.1,.35,.35,material(0xe2e2e2));
+  addBox(scene,8.8,.65,z,2.1,.5,3.3,material(0xb8b9b9));
+  addBox(scene,8.8,1.05,z-1.25,2.1,.35,.35,material(0xe2e2e2));
+  addBox(scene,-10,1.2,z+2,1,.9,.8,material(0x343b40));
+  addBox(scene,10,1.2,z+2,1,.9,.8,material(0x343b40));
+ }
+
+ // Lambalar
+ for(let z=3;z>-60;z-=7){
+  addBox(scene,0,3.93,z,1.5,.08,.8,material(0xaaa99b));
+  const lamp=new THREE.PointLight(0xb9d4ff,2.0,13,2);
+  lamp.position.set(0,3.6,z);
+  lamp.castShadow=true;
+  scene.add(lamp);lamps.push(lamp);
+ }
+
+ // Çıkış kapısı
+ addBox(scene,0,1.5,-49,2.5,3,.25,material(0x16432e));
+ addBox(scene,0,2.8,-48.8,3,.15,.3,material(0x16432e));
+
+ // Anahtar
+ const keyGroup=new THREE.Group();
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(.22,.055,8,20),material(0xe7b83e,.3));
+ keyGroup.add(ring);
+ const shaft=addBox(keyGroup,0,-.28,0,.09,.5,.09,material(0xe7b83e,.3));
+ keyGroup.position.set(2,.8,-28);
+ scene.add(keyGroup);
+ scene.userData.key=keyGroup;
+
+ // Oyuncu
+ player=new THREE.Group();
+ const body=addBox(player,0,1,0,.55,1.4,.35,material(0x26394a));
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.3,16,16),material(0xb7a18d));
+ head.position.y=1.9;player.add(head);
+ player.position.set(0,0,8);
+ scene.add(player);
+
+ flashlight=new THREE.SpotLight(0xe5edff,65,24,Math.PI/7,.45,1.4);
+ flashlight.position.set(0,1.6,0);
+ flashlight.target.position.set(0,1,-1);
+ player.add(flashlight,flashlight.target);
+
+ // Canavar
+ monster=new THREE.Group();
+ const skin=material(0x252329);
+ const dark=material(0x08080b);
+ addBox(monster,0,1.3,0,.85,1.5,.5,skin);
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.48,20,20),skin);
+ head.position.y=2.35;monster.add(head);
+ const eyes=new THREE.MeshBasicMaterial({color:0xff1010});
+ for(let x of [-.17,.17]){
+  const eye=new THREE.Mesh(new THREE.SphereGeometry(.075,12,12),eyes);
+  eye.position.set(x,2.4,-.43);monster.add(eye);
+ }
+ addBox(monster,-.55,1.1,0,.23,1.5,.25,skin);
+ addBox(monster,.55,1.1,0,.23,1.5,.25,skin);
+ addBox(monster,-.22,.35,0,.3,.8,.32,dark);
+ addBox(monster,.22,.35,0,.3,.8,.32,dark);
+ monster.position.set(1,0,-37);
+ scene.add(monster);
+}
+
+function createDoor(x,z){
+ const group=new THREE.Group();
+ const panel=addBox(group,0,1.35,0,.12,2.7,1.65,material(0x4c4037));
+ const handle=addBox(group,.09,1.25,-.55,.08,.12,.12,material(0xc7a34d));
+ group.position.set(x,0,z);
+ scene.add(group);
+ doors.push({group,open:false,x,z});
+}
+
+function startGame(){
+ hideMenus();
+ $("result").style.display="none";
+ $("game").style.display="block";
+ $("playerName").textContent=username;
+ $("status").textContent="Anahtar aranıyor...";
+ $("message").textContent="";
+ $("scare").style.display="none";
+ hasKey=false;gameEnded=false;lightOn=true;
+ yaw=0;pitch=0;
+ doors=[];lamps=[];
+ if(renderer){renderer.dispose();$("game").innerHTML=`
+ <div id="hud">HORROR PROTOCOL<br>Oyuncu: <span id="playerName"></span><br>Görev: Anahtarı bul ve çıkışa ulaş<br><span id="status"></span></div>
+ <div id="message"></div><div id="cross"></div><div id="look"></div>
+ <div id="controls"><div class="pad">
+ <button data-move="forward">▲</button><button data-move="left">◀</button>
+ <button data-move="back">▼</button><button data-move="right">▶</button>
+ </div><div class="actions"><button id="runBtn">KOŞ</button><button onclick="interact()">ETKİLEŞİM</button><button onclick="switchLight()">FENER</button></div></div>`;}
+ buildHospital();
+ $("playerName").textContent=username;
+ soundInit();
+ if(audioCtx.state==="suspended")audioCtx.resume();
+ document.getElementById("game").requestPointerLock?.();
+ lastTime=performance.now();
+ running=true;
+ animate(lastTime);
+}
+
+function switchLight(){
+ lightOn=!lightOn;
+ flashlight.intensity=lightOn?65:0;
+}
+function interact(){
+ if(!running)return;
+ const dist=player.position.distanceTo(scene.userData.key.position);
+ if(!hasKey&&dist<2.5){
+  hasKey=true;scene.remove(scene.userData.key);
+  $("status").textContent="Anahtar bulundu! Çıkışa git.";
+  $("message").textContent="ANAHTARI BULDUN";
+  tone(650,.3,"sine",.08);
+  setTimeout(()=>$("message").textContent="",1800);
+  return;
+ }
+ for(const d of doors){
+  const dist=Math.hypot(player.position.x-d.x,player.position.z-d.z);
+  if(dist<3){
+   d.open=!d.open;
+   d.group.rotation.y=d.open?Math.PI/2:0;
+   doorSound();
+   return;
+  }
+ }
+ $("message").textContent="Burada etkileşime girilecek bir şey yok";
+ setTimeout(()=>$("message").textContent="",1300);
+}
+
+function endGame(win){
+ if(gameEnded)return;
+ gameEnded=true;running=false;
+ if(!win){
+  $("scare").style.display="flex";
+  monsterSound();
+  setTimeout(()=>{
+   $("scare").style.display="none";
+   showResult(false);
+  },1300);
+ }else showResult(true);
+}
+function showResult(win){
+ $("game").style.display="none";
+ $("result").style.display="flex";
+ $("resultTitle").textContent=win?"KAÇMAYI BAŞARDIN":"YAKALANDIN";
+ $("resultText").textContent=win?"Hastaneden kurtuldun!":"Canavar seni yakaladı. Yeniden deneyebilirsin.";
+}
+
+function animate(now){
+ if(!running)return;
+ requestAnimationFrame(animate);
+ const dt=Math.min((now-lastTime)/1000,.04);lastTime=now;
+
+ const forward=(keys.KeyW||keys.ArrowUp||touchMove.forward?1:0)-(keys.KeyS||keys.ArrowDown||touchMove.back?1:0);
+ const side=(keys.KeyD||keys.ArrowRight||touchMove.right?1:0)-(keys.KeyA||keys.ArrowLeft||touchMove.left?1:0);
+ const sprint=keys.ShiftLeft||keys.ShiftRight;
+ const speed=sprint?12:6;
+ const dx=-Math.sin(yaw)*forward+Math.cos(yaw)*side;
+ const dz=-Math.cos(yaw)*forward-Math.sin(yaw)*side;
+ const length=Math.hypot(dx,dz)||1;
+ player.position.x+=dx/length*speed*dt;
+ player.position.z+=dz/length*speed*dt;
+ player.position.x=THREE.MathUtils.clamp(player.position.x,-5.3,5.3);
+ player.position.z=THREE.MathUtils.clamp(player.position.z,-48,12);
+
+ camera.position.set(player.position.x,player.position.y+1.65,player.position.z);
+ camera.rotation.order="YXZ";
+ camera.rotation.y=yaw;
+ camera.rotation.x=pitch;
+
+ // Canavar takip sistemi
+ const target=new THREE.Vector3(player.position.x,0,player.position.z);
+ const distance=monster.position.distanceTo(target);
+ if(distance>1.3){
+  const direction=target.clone().sub(monster.position).normalize();
+  monster.position.add(direction.multiplyScalar((distance<12?3.7:2.2)*dt));
+  monster.lookAt(player.position.x,1.2,player.position.z);
+ }
+ if(distance<10){
+  $("message").textContent="BİR ŞEY YAKLAŞIYOR...";
+  if(now-lastMonsterSound>1800){
+   monsterSound();lastMonsterSound=now;
+  }
+ }else $("message").textContent="";
+
+ // Yaklaşınca ışıklar bozulur
+ flickerTimer-=dt;
+ if(distance<13&&flickerTimer<=0){
+  flickerTimer=.12+Math.random()*.35;
+  const off=Math.random()>.45;
+  lamps.forEach(l=>l.intensity=off?0:2);
+  if(off)flickerSound();
+ }else if(distance>=13){
+  lamps.forEach(l=>l.intensity=2);
+ }
+ // Anahtar ve çıkış kontrolü
+ const keyDist=player.position.distanceTo(scene.userData.key.position);
+ if(!hasKey&&keyDist<1.5){
+  $("message").textContent="ANAHTAR YAKININDA! ETKİLEŞİM'E BAS";
+ }
+ if(hasKey&&player.position.z<-46&&Math.abs(player.position.x)<2.5){
+  endGame(true);
+ }
+ if(distance<1.4)endGame(false);
+
+ // Anahtar hafif döner
+ if(!hasKey&&scene.userData.key){
+  scene.userData.key.rotation.y+=dt*1.8;
+  scene.userData.key.position.y=.8+Math.sin(now*.003)*.12;
+ }
+ renderer.render(scene,camera);
+}
+
+// Klavye
+window.addEventListener("keydown",e=>{
+ keys[e.code]=true;
+ if(e.code==="KeyE")interact();
+ if(e.code==="KeyF")switchLight();
+});
+window.addEventListener("keyup",e=>keys[e.code]=false);
+
+// Mobil hareket tuşları
+document.querySelectorAll("[data-move]").forEach(btn=>{
+ const dir=btn.dataset.move;
+ btn.addEventListener("pointerdown",e=>{e.preventDefault();touchMove[dir]=true;});
+ ["pointerup","pointercancel","pointerleave"].forEach(ev=>btn.addEventListener(ev,()=>touchMove[dir]=false));
+});
+$("runBtn").addEventListener("pointerdown",()=>keys.ShiftLeft=true);
+["pointerup","pointercancel","pointerleave"].forEach(ev=>$("runBtn").addEventListener(ev,()=>keys.ShiftLeft=false));
+
+// Kamera bakışı: ekranda sağ tarafta parmağını sürükle
+let lookTouch=null;
+document.addEventListener("pointerdown",e=>{
+ if(e.target.id==="look")lookTouch={x:e.clientX,y:e.clientY};
+});
+document.addEventListener("pointermove",e=>{
+ if(!lookTouch)return;
+ const dx=e.clientX-lookTouch.x,dy=e.clientY-lookTouch.y;
+ yaw-=dx*.006;pitch-=dy*.004;
+ pitch=THREE.MathUtils.clamp(pitch,-1.1,1.1);
+ lookTouch={x:e.clientX,y:e.clientY};
+});
+document.addEventListener("pointerup",()=>lookTouch=null);
+
+window.addEventListener("resize",()=>{
+ if(!camera||!renderer)return;
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+
+window.login=login;
+window.createRoom=createRoom;
+window.joinScreen=joinScreen;
+window.makeRoom=makeRoom;
+window.joinRoom=joinRoom;
+window.backMenu=backMenu;
+window.startGame=startGame;
+window.interact=interact;
+window.switchLight=switchLight;
+window.showInfo=showInfo;
+</script>
+</body>
+</html>
